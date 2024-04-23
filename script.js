@@ -18,7 +18,7 @@ const fetchAllPlayers = async () => {
     // create resonse to fetch the API
     const resonse = await fetch(API_URL_ALL_PLAYERS);
     const data = await resonse.json();
-    state.puppies = data.data;
+    state.playerList = data.data;
   } catch (err) {
     console.error("Uh oh, trouble fetching players!", err);
   }
