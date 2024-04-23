@@ -1,15 +1,24 @@
 // Use the API_URL variable to make fetch requests to the API.
 // Replace the placeholder with your cohort name (ex: 2109-UNF-HY-WEB-PT)
-const cohortName = "YOUR COHORT NAME HERE";
-const API_URL = `https://fsa-puppy-bowl.herokuapp.com/api/${cohortName}`;
+const cohortName = "2402-FTB-ET-WEB-PT";
+const API_URL_ALL_PLAYERS = `https://fsa-puppy-bowl.herokuapp.com/api/${cohortName}/players`;
+
+// creating an object array to hold the puppies
+const state = {
+  puppies: [],
+};
 
 /**
  * Fetches all players from the API.
  * @returns {Object[]} the array of player objects
  */
+// adryan
 const fetchAllPlayers = async () => {
   try {
-    // TODO
+    // create resonse to fetch the API
+    const resonse = await fetch(API_URL_ALL_PLAYERS);
+    const data = await resonse.json();
+    state.puppies = data.data;
   } catch (err) {
     console.error("Uh oh, trouble fetching players!", err);
   }
