@@ -5,7 +5,7 @@ const API_URL_ALL_PLAYERS = `https://fsa-puppy-bowl.herokuapp.com/api/${cohortNa
 
 // creating an object array to hold the puppies
 const state = {
-  puppies: [],
+  playerList: [],
 };
 
 /**
