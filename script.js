@@ -17,7 +17,7 @@ const state = {
 const fetchAllPlayers = async () => {
   try {
     // create resonse to fetch the API
-    const resonse = await fetch(API_URL_ALL_PLAYERS);
+    const resonse = await fetch(API_URL_ALL_PLAYERS); 
     const data = await resonse.json();
     state.playerList = data.data;
   } catch (err) {
@@ -31,10 +31,17 @@ const fetchAllPlayers = async () => {
  * @returns {Object} the player object
  */
 const fetchSinglePlayer = async (playerId) => {
-  try {
-    // TODO
+  try { // TODO - Justin
+    const player = state.playerList.find((player) => player.id === playerId); // Finds the player in the state array
+
+    if (!player) {
+      console.error(`Player #${playerId} not found!`); // Logs an error if the player is not found
+      return null; // Returns null if the player is not found
+    }
+    return player; // Returns the player object if found
   } catch (err) {
     console.error(`Oh no, trouble fetching player #${playerId}!`, err);
+    return null; // Returns null if there is an error
   }
 };
 
