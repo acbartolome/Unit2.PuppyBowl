@@ -9,6 +9,9 @@ const state = {
   playerList: [],
 };
 
+const playersList = document.querySelector('#players');
+
+
 /**
  * Fetches all players from the API.
  * @returns {Object[]} the array of player objects
@@ -16,10 +19,11 @@ const state = {
 // adryan
 const fetchAllPlayers = async () => {
   try {
-    // create resonse to fetch the API
-    const resonse = await fetch(API_URL_ALL_PLAYERS);
-    const data = await resonse.json();
-    state.playerList = data.data;
+    // create response to fetch the API
+    const response = await fetch(API_URL_ALL_PLAYERS);
+    const data = await response.json();
+    state.playerList = data.data.players;
+    console.log(state.playerList)
   } catch (err) {
     console.error("Uh oh, trouble fetching players!", err);
   }
@@ -87,6 +91,25 @@ const removePlayer = async (playerId) => {
  */
 const renderAllPlayers = (playerList) => {
   // TODO
+  // create a for loop to loop through the object arrays
+  for (let i = 0; i < state.playerList.length; i++){
+    // creating object to represent the index of i
+    const currentPlayer = state.playerList[i];
+    // creating a new div
+    const newDiv = document.createElement('div');
+    // adding a class name to the div so we can style with CSS
+    newDiv.classList.add('playerListCard');
+    // adding the info the div with image, name and player ID
+    newDiv.innerHTML = `
+    <img src=${currentPlayer.imageUrl}>
+    <h1>${currentPlayer.name}</h1>
+    <p>${currentPlayer.id}</p>
+    <button class="playerDetails">See details</button>
+    <button class="deletePlayer">Remove from roster</button>
+    `;
+    playersList.appendChild(newDiv);
+    // add event listener for buttons to see player details and delete player
+  }
 };
 
 /**
@@ -128,6 +151,7 @@ const init = async () => {
 
   renderNewPlayerForm();
 };
+init();
 
 // This script will be run using Node when testing, so here we're doing a quick
 // check to see if we're in Node or the browser, and exporting the functions
