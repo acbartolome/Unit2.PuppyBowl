@@ -23,7 +23,6 @@ const fetchAllPlayers = async () => {
     const response = await fetch(API_URL_ALL_PLAYERS);
     const data = await response.json();
     state.playerList = data.data.players;
-    console.log(state.playerList)
   } catch (err) {
     console.error("Uh oh, trouble fetching players!", err);
   }
@@ -151,7 +150,7 @@ const init = async () => {
 
   renderNewPlayerForm();
 };
-init();
+
 
 // This script will be run using Node when testing, so here we're doing a quick
 // check to see if we're in Node or the browser, and exporting the functions
