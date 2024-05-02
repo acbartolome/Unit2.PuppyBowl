@@ -35,21 +35,14 @@ const fetchSinglePlayer = async (playerId) => {
   try {
     // TODO
     const playerURL = `https://fsa-puppy-bowl.herokuapp.com/api/${cohortName}/players/${playerId}`;
-    // console.log("this is the players URL", playerURL);
     const response = await fetch(playerURL);
-    // const response = await fetch(API_URL);
     const data = await response.json();
-    // console.log(data.data.player);
-    // const playersArray = data.data.player.find(
-    //   player => player.id === playerId
-    // );
-    // console.log(playersArray);
   } catch (err) {
     console.error(`Oh no, trouble fetching player #${playerId}!`, err);
   }
 };
 // come back to this
-fetchSinglePlayer(3718);
+// fetchSinglePlayer(3718);
 
 /**
  * Adds a new player to the roster via the API.
@@ -67,6 +60,7 @@ const addNewPlayer = async (playerObj) => {
     });
     const data = await response.json();
     console.log(data);
+    location.reload();
   } catch (err) {
     console.error("Oops, something went wrong with adding that player!", err);
   }
@@ -82,7 +76,6 @@ const removePlayer = async (playerId) => {
     const response = await fetch(API_URL + `/${playerId}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, breed, status, imageUrl }),
     });
     const data = await response.json();
     console.log(data);
@@ -116,23 +109,68 @@ const removePlayer = async (playerId) => {
 const renderAllPlayers = (playerList) => {
   // TODO
   // create a for loop to loop through the object arrays
+  // for (let i = 0; i < state.playerList.length; i++) {
+  //   // creating object to represent the index of i
+  //   const currentPlayer = state.playerList[i];
+  //   // creating a new div
+  //   const newDiv = document.createElement("div");
+  //   // adding a class name to the div so we can style with CSS
+  //   newDiv.classList.add("playerListCard");
+  //   // adding the info the div with image, name and player ID
+  //   newDiv.innerHTML = `
+  //   <img src=${currentPlayer.imageUrl} alt=${currentPlayer.name}>
+  //   <h1>${currentPlayer.name}</h1>
+  //   <p>${currentPlayer.id}</p>
+  //   <button class="playerDetails">See details</button>
+  //   <button class="deletePlayer">Remove from roster</button>
+  //   `;
+  //   playersList.appendChild(newDiv);
+  //   // add event listener for buttons to see player details and delete player
+  //   // see details event listener
+
+  //   // delete player event listener
+  //   const deleteButton = document.querySelector(".deletePlayer");
+  //   deleteButton.addEventListener('click', () => removePlayer(currentPlayer.id));
+  // }
+  const main = document.querySelector("main");
   for (let i = 0; i < state.playerList.length; i++) {
-    // creating object to represent the index of i
     const currentPlayer = state.playerList[i];
-    // creating a new div
     const newDiv = document.createElement("div");
-    // adding a class name to the div so we can style with CSS
     newDiv.classList.add("playerListCard");
-    // adding the info the div with image, name and player ID
-    newDiv.innerHTML = `
-    <img src=${currentPlayer.imageUrl}>
-    <h1>${currentPlayer.name}</h1>
-    <p>${currentPlayer.id}</p>
-    <button class="playerDetails">See details</button>
-    <button class="deletePlayer">Remove from roster</button>
-    `;
-    playersList.appendChild(newDiv);
-    // add event listener for buttons to see player details and delete player
+
+    const playerImg = document.createElement("img");
+    playerImg.src = currentPlayer.imageUrl;
+    playerImg.alt = `Image of ${currentPlayer.name}`;
+
+    const playerName = document.createElement("h1");
+    playerName.innerHTML = currentPlayer.name;
+    //  playerName.classList.add() possibly add class
+
+    const playerId = document.createElement("p");
+    playerId.innerHTML = `ID: ${currentPlayer.id}`;
+    // playerId.classList.add()
+
+    const detailsButton = document.createElement("button");
+    detailsButton.classList.add("playerDetails");
+    detailsButton.textContent = "See details";
+    detailsButton.addEventListener("click", () => renderSinglePlayer(currentPlayer));
+
+    const removeButton = document.createElement("button");
+    removeButton.classList.add("deletePlayer");
+    removeButton.textContent = "Remove from roster";
+
+    removeButton.addEventListener("click", () => {
+      removePlayer(currentPlayer.id);
+      alert(`You have removed ${currentPlayer.name}`);
+      location.reload();
+    });
+
+    newDiv.appendChild(playerImg);
+    newDiv.appendChild(playerName);
+    newDiv.appendChild(playerId);
+    newDiv.appendChild(detailsButton);
+    newDiv.appendChild(removeButton);
+    main.appendChild(newDiv);
   }
 };
 
@@ -151,6 +189,43 @@ const renderAllPlayers = (playerList) => {
  */
 const renderSinglePlayer = (player) => {
   // TODO
+  const main = document.querySelector("main");
+  main.innerHTML = "";
+
+  const newDiv = document.createElement("div");
+  newDiv.classList.add("playerListCard");
+
+  const playerImg = document.createElement("img");
+  playerImg.src = player.imageUrl;
+  playerImg.alt = `Image of ${player.name}`;
+
+  const playerName = document.createElement("h1");
+  playerName.innerHTML = player.name;
+  //  playerName.classList.add() possibly add class
+
+  const playerId = document.createElement("p");
+  playerId.innerHTML = `ID: ${player.id}`;
+
+  const playerBreed = document.createElement("p");
+  playerBreed.innerHTML = `Breed: ${player.breed}`;
+
+  const playerTeam = document.createElement("p");
+  playerTeam.innerHTML = `Team: ${player.teamId || 'Unassigned'}`;
+
+  const backToMain = document.createElement("button");
+  backToMain.classList.add('returnToMain');
+  backToMain.textContent = 'Return to main'
+  backToMain.addEventListener('click', () => {
+    location.reload();
+  })
+
+  newDiv.appendChild(playerImg);
+  newDiv.appendChild(playerName);
+  newDiv.appendChild(playerId);
+  newDiv.appendChild(playerBreed);
+  newDiv.appendChild(playerTeam);
+  newDiv.appendChild(backToMain)
+  main.appendChild(newDiv);
 };
 
 /**
