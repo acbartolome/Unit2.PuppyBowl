@@ -251,7 +251,6 @@ const renderNewPlayerForm = () => {
     inputBreed.type = 'text';
     inputStatus.type = 'text';
     inputImageUrl.type = 'text';
-    inputSubmit.type = 'submit';
 
     const inputNameLabel = document.createElement("label");
     const inputBreedLabel = document.createElement("label");
