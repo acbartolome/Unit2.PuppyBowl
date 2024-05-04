@@ -8,8 +8,6 @@ const state = {
   playerList: [],
 };
 
-const playersList = document.querySelector("#players");
-
 /**
  * Fetches all players from the API.
  * @returns {Object[]} the array of player objects
@@ -21,6 +19,7 @@ const fetchAllPlayers = async () => {
     const response = await fetch(API_URL);
     const data = await response.json();
     state.playerList = data.data.players;
+    return state.playerList;
   } catch (err) {
     console.error("Uh oh, trouble fetching players!", err);
   }
@@ -37,12 +36,11 @@ const fetchSinglePlayer = async (playerId) => {
     const playerURL = `https://fsa-puppy-bowl.herokuapp.com/api/${cohortName}/players/${playerId}`;
     const response = await fetch(playerURL);
     const data = await response.json();
+    return data.data.player;
   } catch (err) {
     console.error(`Oh no, trouble fetching player #${playerId}!`, err);
   }
 };
-// come back to this
-// fetchSinglePlayer(3718);
 
 /**
  * Adds a new player to the roster via the API.
@@ -59,7 +57,7 @@ const addNewPlayer = async (playerObj) => {
       body: JSON.stringify({ name, breed, status, imageUrl }),
     });
     const data = await response.json();
-    console.log(data);
+    return data;
     location.reload();
   } catch (err) {
     console.error("Oops, something went wrong with adding that player!", err);
@@ -78,7 +76,7 @@ const removePlayer = async (playerId) => {
       headers: { "Content-Type": "application/json" },
     });
     const data = await response.json();
-    console.log(data);
+    return data;
   } catch (err) {
     console.error(
       `Whoops, trouble removing player #${playerId} from the roster!`,
@@ -249,6 +247,12 @@ const renderNewPlayerForm = () => {
     inputImageUrl.attributes.name = "imageUrl";
     inputSubmit.attributes.id = "submit";
 
+    inputName.type = 'text';
+    inputBreed.type = 'text';
+    inputStatus.type = 'text';
+    inputImageUrl.type = 'text';
+    inputSubmit.type = 'submit';
+
     const inputNameLabel = document.createElement("label");
     const inputBreedLabel = document.createElement("label");
     const inputStatusLabel = document.createElement("label");
@@ -259,6 +263,7 @@ const renderNewPlayerForm = () => {
     inputStatusLabel.textContent = "Status";
     inputImageUrlLabel.textContent = "ImageUrl";
     inputSubmit.innerHTML = "Submit";
+
 
     const arrayInput = [
       inputNameLabel,

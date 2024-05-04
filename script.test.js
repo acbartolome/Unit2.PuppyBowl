@@ -28,7 +28,35 @@ describe("fetchAllPlayers", () => {
 });
 
 // TODO: Tests for `fetchSinglePlayer`
+describe('fetchSinglePlayer', () => {
+  let player;
+  beforeAll(async () => {
+    player = await fetchSinglePlayer(4509);
+  });
 
+  test('returns a player ID', async () => {
+    expect(player.id).toEqual(4509);
+  })
+})
 // TODO: Tests for `addNewPlayer`
+describe('addNewPlayer', () => {
+
+  test('Test if you get a success when adding player', async () => {
+    const newPlayer = await addNewPlayer({
+      name: 'Dog',
+      breed: 'Corgi',
+      status: 'bench',
+      imageUrl: 'https://hips.hearstapps.com/ghk.h-cdn.co/assets/17/30/2560x3839/australian-shepherd.jpg?resize=980:*'
+    })
+    expect(newPlayer.success).toBe(true)
+  })
+})
 
 // (Optional) TODO: Tests for `removePlayer`
+// test is a one time since it deletes the player
+describe('removePlayer', () => {
+  test('Check if player is removed successfully', async () => {
+    const deletePlayer = await removePlayer(4496);
+    expect(deletePlayer.success).toBe(true)
+  })
+})
